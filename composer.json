@@ -24,7 +24,6 @@
     },
     "require": {
         "php": ">=7.0",
-        "symfony/symfony": ">=3.2",
         "kriswallsmith/buzz": "~0.7",
         "gree/jose": "~2.0"
     },
