@@ -94,7 +94,7 @@ class OICToken extends AbstractToken
     public function setIdToken($idToken)
     {
         if (null === $this->getUser()) {
-            $this->setUser(new OICUser($idToken->claims['sub']));
+            $this->setUser(new OICUser($idToken->claims['unique_name']));
         }
 
         $this->idToken = $idToken;
@@ -146,7 +146,7 @@ class OICToken extends AbstractToken
 
     public function setRawUserinfo($rowData)
     {
-        $user = new OICUser($rowData['sub'], $rowData);
+        $user = new OICUser($rowData['unique_name'], $rowData);
         $this->userinfo = $rowData;
         $this->setUser($user);
     }
