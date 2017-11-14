@@ -216,6 +216,8 @@ abstract class AbstractGenericOICResourceOwner implements ResourceOwnerInterface
     private function retrieveIdTokenAndAccessToken(OICToken $oicToken, array $parameters, string $redirectUri = 'login_check')
     {
         $parameters['redirect_uri'] = $this->httpUtils->generateUri(new Request(), $redirectUri);
+        $parameters['client_id'] = $this->options['client_id'];
+        $parameters['client_secret'] = $this->options['client_secret'];
 
         $postParametersQuery = http_build_query($parameters);
 
@@ -231,7 +233,6 @@ abstract class AbstractGenericOICResourceOwner implements ResourceOwnerInterface
 
         $response = new HttpClientResponse();
 
-        $this->httpClient->setOption(CURLOPT_USERPWD, $this->options['client_id'].':'.$this->options['client_secret']);
         $this->httpClient->send($request, $response);
 
         $content = $this->responseHandler->handleTokenAndAccessTokenResponse($response);
