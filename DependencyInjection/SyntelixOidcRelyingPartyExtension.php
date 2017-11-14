@@ -96,7 +96,9 @@ class SyntelixOidcRelyingPartyExtension extends Extension
     private function constructEndpointUrl(&$config)
     {
         foreach ($config['endpoints_url'] as $key => $endpoint) {
-            $config['endpoints_url'][$key] = $config['issuer'].$endpoint;
+            if (!preg_match('/^https?:\/\//', $endpoint)) {
+                $config['endpoints_url'][$key] = $config['issuer'].$endpoint;
+            }
         }
     }
 
