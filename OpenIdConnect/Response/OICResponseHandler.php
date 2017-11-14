@@ -207,10 +207,20 @@ class OICResponseHandler
             if (null !== $key) {
                 $jws = new \JOSE_JWS($jwt);
 
-                try {
-                    $jws->verify($key);
-                } catch (\Exception $e) {
-                    throw new InvalidIdSignatureException($e->getMessage());
+                $keys = is_array($key) ? $key : array($key);
+                $exceptions = array();
+
+                foreach ($keys as $key) {
+                    try {
+                        $jws->verify($key);
+                        break;
+                    } catch (\Exception $e) {
+                        $exceptions[] = $e->getMessage();
+                    }
+                }
+
+                if (!empty($exceptions)) {
+                    throw new InvalidIdSignatureException(implode("\n", $exceptions));
                 }
             }
         }
